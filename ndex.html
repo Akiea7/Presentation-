@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سباق الموت - Death Race</title>
+    <title>سباق الموت - Death Race Pro</title>
+    <link href="https://fonts.font.im/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,8 +14,8 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             color: #fff;
             overflow: hidden;
             height: 100vh;
@@ -23,31 +24,42 @@
         }
         
         .header {
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #ff2d55;
+            border-bottom: 3px solid #ff2d55;
+            box-shadow: 0 0 20px rgba(255, 45, 85, 0.5);
         }
         
         .logo {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: bold;
             color: #ff2d55;
-            text-shadow: 0 0 10px rgba(255, 45, 85, 0.7);
+            text-shadow: 0 0 15px rgba(255, 45, 85, 0.8);
+            letter-spacing: 1px;
         }
         
         .stats {
             display: flex;
-            gap: 20px;
+            gap: 25px;
         }
         
         .stat-box {
             background: rgba(255, 255, 255, 0.1);
-            padding: 8px 15px;
-            border-radius: 8px;
-            border: 1px solid #ff2d55;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 2px solid #ff2d55;
+            box-shadow: 0 0 10px rgba(255, 45, 85, 0.3);
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4cd137;
         }
         
         .game-container {
@@ -57,10 +69,11 @@
         }
         
         #gameCanvas {
-            background: #0f3460;
+            background: #0a0e1a;
             display: block;
             margin: 0 auto;
-            box-shadow: 0 0 30px rgba(255, 45, 85, 0.3);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+            border: 3px solid #ff2d55;
         }
         
         .controls {
@@ -68,7 +81,13 @@
             bottom: 20px;
             right: 20px;
             display: flex;
-            gap: 10px;
+            gap: 15px;
+            flex-direction: column;
+        }
+        
+        .control-row {
+            display: flex;
+            gap: 15px;
         }
         
         .control-btn {
@@ -76,19 +95,21 @@
             height: 70px;
             border-radius: 50%;
             background: rgba(255, 45, 85, 0.3);
-            border: 2px solid #ff2d55;
+            border: 3px solid #ff2d55;
             color: white;
-            font-size: 24px;
+            font-size: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s;
+            box-shadow: 0 0 15px rgba(255, 45, 85, 0.5);
         }
         
         .control-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.9);
             background: rgba(255, 45, 85, 0.6);
+            box-shadow: 0 0 20px #ff2d55;
         }
         
         .power-ups {
@@ -96,48 +117,54 @@
             top: 20px;
             left: 20px;
             display: flex;
-            gap: 10px;
+            flex-direction: column;
+            gap: 15px;
         }
         
         .power-up-item {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid #4cd137;
+            border: 2px solid #4cd137;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 28px;
+            box-shadow: 0 0 15px rgba(76, 209, 55, 0.5);
         }
         
         .chat {
             position: absolute;
             top: 70px;
             left: 20px;
-            width: 300px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 10px;
-            border: 1px solid #ff2d55;
+            width: 350px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            border: 2px solid #ff2d55;
             padding: 15px;
+            box-shadow: 0 0 20px rgba(255, 45, 85, 0.5);
         }
         
         .chat-header {
             font-weight: bold;
             margin-bottom: 10px;
             color: #ff2d55;
+            font-size: 18px;
         }
         
         .messages {
-            height: 150px;
+            height: 180px;
             overflow-y: auto;
+            padding: 5px;
         }
         
         .message {
             margin-bottom: 8px;
-            padding: 5px;
+            padding: 8px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 14px;
         }
         
         .player1-car { border-color: #3498db; }
@@ -145,77 +172,100 @@
         
         .weapon {
             position: absolute;
-            width: 10px;
-            height: 30px;
-            background: #f39c12;
-            border-radius: 5px;
+            width: 12px;
+            height: 35px;
+            background: linear-gradient(to bottom, #f39c12, #e67e22);
+            border-radius: 6px;
+            box-shadow: 0 0 10px #f39c12;
         }
         
         .explosion {
             position: absolute;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             background: radial-gradient(circle, #ff9800, #ff5722, transparent);
             border-radius: 50%;
-            animation: explode 0.5s forwards;
+            animation: explode 0.6s forwards;
         }
         
         @keyframes explode {
             0% { transform: scale(0); opacity: 1; }
-            100% { transform: scale(2); opacity: 0; }
+            100% { transform: scale(3); opacity: 0; }
         }
         
         .hud {
             position: absolute;
             top: 20px;
             right: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid #ff2d55;
-            border-radius: 10px;
-            padding: 15px;
-            width: 200px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #ff2d55;
+            border-radius: 15px;
+            padding: 20px;
+            width: 250px;
+            box-shadow: 0 0 20px rgba(255, 45, 85, 0.5);
+        }
+        
+        .player-hud {
+            margin-bottom: 15px;
+        }
+        
+        .player-name {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: #4cd137;
         }
         
         .health-bar {
             width: 100%;
-            height: 20px;
+            height: 25px;
             background: #333;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
             margin-top: 5px;
+            border: 1px solid #555;
         }
         
         .health-fill {
             height: 100%;
             background: linear-gradient(90deg, #4cd137, #fbc531, #e84118);
-            transition: width 0.3s;
+            transition: width 0.4s;
         }
         
         .weapon-selector {
             position: absolute;
-            bottom: 100px;
+            bottom: 120px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 10px;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px solid #9b59b6;
         }
         
         .weapon-option {
-            width: 60px;
-            height: 60px;
-            border-radius: 8px;
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid #9b59b6;
+            border: 2px solid #9b59b6;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 32px;
             cursor: pointer;
+            transition: all 0.3s;
         }
         
         .weapon-option.active {
             border-color: #f1c40f;
-            box-shadow: 0 0 15px #f1c40f;
+            box-shadow: 0 0 20px #f1c40f;
+            transform: scale(1.1);
+        }
+        
+        .weapon-option:hover {
+            background: rgba(155, 89, 182, 0.3);
         }
         
         .game-over {
@@ -224,7 +274,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -234,47 +284,121 @@
         }
         
         .game-over h2 {
-            font-size: 48px;
+            font-size: 60px;
             color: #ff2d55;
             margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255, 45, 85, 0.8);
+        }
+        
+        .final-stats {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 2px solid #ff2d55;
         }
         
         .restart-btn {
-            padding: 15px 30px;
-            background: #ff2d55;
+            padding: 18px 40px;
+            background: linear-gradient(45deg, #ff2d55, #ff6b9d);
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             color: white;
-            font-size: 18px;
+            font-size: 20px;
+            font-weight: bold;
             cursor: pointer;
-            margin-top: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(255, 45, 85, 0.7);
+        }
+        
+        .restart-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 45, 85, 1);
+        }
+        
+        .minimap {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 150px;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #4cd137;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .minimap-player {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+        
+        .player1-minimap {
+            background: #3498db;
+        }
+        
+        .player2-minimap {
+            background: #e74c3c;
+        }
+        
+        .notification {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px 40px;
+            border-radius: 15px;
+            border: 2px solid #4cd137;
+            font-size: 24px;
+            color: #4cd137;
+            display: none;
+            z-index: 50;
+            box-shadow: 0 0 30px rgba(76, 209, 55, 0.7);
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="logo">سباق الموت - Death Race</div>
+        <div class="logo">سباق الموت - Death Race Pro</div>
         <div class="stats">
-            <div class="stat-box">اللاعب 1: <span id="player1Score">0</span></div>
-            <div class="stat-box">اللاعب 2: <span id="player2Score">0</span></div>
-            <div class="stat-box">الوقت: <span id="timer">60</span>s</div>
+            <div class="stat-box">
+                <div>اللاعب 1</div>
+                <div class="stat-value" id="player1Score">0</div>
+            </div>
+            <div class="stat-box">
+                <div>اللاعب 2</div>
+                <div class="stat-value" id="player2Score">0</div>
+            </div>
+            <div class="stat-box">
+                <div>الوقت المتبقي</div>
+                <div class="stat-value" id="timer">60</div>
+            </div>
         </div>
     </div>
     
     <div class="game-container">
-        <canvas id="gameCanvas" width="1000" height="600"></canvas>
+        <canvas id="gameCanvas" width="1200" height="700"></canvas>
         
         <div class="controls">
-            <div class="control-btn" id="upBtn">↑</div>
-            <div class="control-btn" id="leftBtn">←</div>
-            <div class="control-btn" id="downBtn">↓</div>
-            <div class="control-btn" id="rightBtn">→</div>
+            <div class="control-row">
+                <div class="control-btn" id="upBtn">↑</div>
+            </div>
+            <div class="control-row">
+                <div class="control-btn" id="leftBtn">←</div>
+                <div class="control-btn" id="downBtn">↓</div>
+                <div class="control-btn" id="rightBtn">→</div>
+            </div>
         </div>
         
         <div class="power-ups">
             <div class="power-up-item">🛡️</div>
             <div class="power-up-item">⚡</div>
             <div class="power-up-item">💣</div>
+            <div class="power-up-item">🎯</div>
         </div>
         
         <div class="chat">
@@ -282,32 +406,49 @@
             <div class="messages" id="chatMessages">
                 <div class="message">اللاعب 1: استعد للهزيمة!</div>
                 <div class="message">اللاعب 2: هذا سباق، لا رحمة!</div>
+                <div class="message">النظام: بدأ السباق! اجمع الأسلحة ودمر خصمك!</div>
             </div>
-            <input type="text"" placeholder="اكتب رسالتك..." style="width: 100%; padding: 5px; margin-top: 10px;">
+            <input type="text" id="chatInput" placeholder="اكتب رسالتك..." style="width: 100%; padding: 8px; margin-top: 10px; border-radius: 8px; border: 1px solid #ff2d55; background: rgba(0,0,0,0.5); color: white;">
         </div>
         
         <div class="hud">
-            <h3>اللاعب 1</h3>
-            <div class="health-bar">
-                <div class="health-fill" id="player1Health" style="width: 100%;"></div>
+            <div class="player-hud">
+                <div class="player-name">اللاعب 1</div>
+                <div class="health-bar">
+                    <div class="health-fill" id="player1Health" style="width: 100%;"></div>
+                </div>
             </div>
-            <h3>اللاعب 2</h3>
-            <div class="health-bar">
-                <div class="health-fill" id="player2Health" style="width: 100%;"></div>
+            <div class="player-hud">
+                <div class="player-name">اللاعب 2</div>
+                <div class="health-bar">
+                    <div class="health-fill" id="player2Health" style="width: 100%;"></div>
+                </div>
             </div>
+        </div>
+        
+        <div class="minimap">
+            <div class="minimap-player player1-minimap" id="minimapPlayer1" style="top: 50px; left: 50px;"></div>
+            <div class="minimap-player player2-minimap" id="minimapPlayer2" style="top: 100px; left: 100px;"></div>
         </div>
         
         <div class="weapon-selector">
             <div class="weapon-option active" data-weapon="machinegun">🔫</div>
             <div class="weapon-option" data-weapon="missile">🚀</div>
             <div class="weapon-option" data-weapon="laser">⚡</div>
+            <div class="weapon-option" data-weapon="flamethrower">🔥</div>
         </div>
         
         <div class="game-over" id="gameOverScreen">
             <h2>انتهى السباق!</h2>
-            <p id="winnerText">اللاعب 1 فاز!</p>
+            <div class="final-stats">
+                <p id="winnerText">اللاعب 1 فاز!</p>
+                <p>النتيجة النهائية: <span id="finalScore">15-12</span></p>
+                <p>الوقت: 60 ثانية</p>
+            </div>
             <button class="restart-btn" id="restartBtn">إعادة اللعبة</button>
         </div>
+        
+        <div class="notification" id="notification">تم جمع قوة الشIELD!</div>
     </div>
 
     <script>
@@ -321,38 +462,53 @@
         const player2HealthEl = document.getElementById('player2Health');
         const gameOverScreen = document.getElementById('gameOverScreen');
         const winnerText = document.getElementById('winnerText');
+        const finalScore = document.getElementById('finalScore');
         const restartBtn = document.getElementById('restartBtn');
+        const notification = document.getElementById('notification');
+        const chatInput = document.getElementById('chatInput');
+        
+        // Minimap elements
+        const minimapPlayer1 = document.getElementById('minimapPlayer1');
+        const minimapPlayer2 = document.getElementById('minimapPlayer2');
         
         // Game state
         let gameRunning = true;
         let gameTime = 60;
         let keys = {};
         let player1 = {
-            x: 100,
-            y: 300,
-            width: 40,
-            height: 60,
-            speed: 5,
+            x: 150,
+            y: 350,
+            width: 50,
+            height: 80,
+            speed: 6,
             health: 100,
             score: 0,
             color: '#3498db',
             angle: 0,
             weapons: ['machinegun', 'missile'],
-            currentWeapon: 'machinegun'
+            currentWeapon: 'machinegun',
+            armor: 0,
+            shield: false,
+            lastShot: 0,
+            acceleration: 0
         };
         
         let player2 = {
-            x: 850,
-            y: 300,
-            width: 40,
-            height: 60,
-            speed: 5,
+            x: 1000,
+            y: 350,
+            width: 50,
+            height: 80,
+            speed: 6,
             health: 100,
             score: 0,
             color: '#e74c3c',
             angle: Math.PI,
             weapons: ['machinegun', 'laser'],
-            currentWeapon: 'machinegun'
+            currentWeapon: 'machinegun',
+            armor: 0,
+            shield: false,
+            lastShot: 0,
+            acceleration: 0
         };
         
         let obstacles = [];
@@ -360,29 +516,42 @@
         let weapons = [];
         let explosions = [];
         let particles = [];
+        let effects = [];
+        let trails = [];
         
         // Initialize game
         function initGame() {
             // Create obstacles
-            for (let i = 0; i < 15; i++) {
+            for (let i = 0; i < 25; i++) {
                 obstacles.push({
-                    x: Math.random() * (canvas.width - 40),
-                    y: Math.random() * (canvas.height - 40),
-                    width: 30 + Math.random() * 30,
-                    height: 30 + Math.random() * 30,
-                    color: `hsl(${Math.random() * 360}, 70%, 50%)`
+                    x: Math.random() * (canvas.width - 60),
+                    y: Math.random() * (canvas.height - 60),
+                    width: 40 + Math.random() * 40,
+                    height: 40 + Math.random() * 40,
+                    color: `hsl(${Math.random() * 360}, 70%, 50%)`,
+                    rotation: 0,
+                    spinSpeed: (Math.random() - 0.5) * 0.1
                 });
             }
             
             // Create power-ups
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < 12; i++) {
                 powerUps.push({
-                    x: Math.random() * (canvas.width - 30),
-                    y: Math.random() * (canvas.height - 30),
-                    width: 30,
-                    height: 30,
-                    type: ['health', 'speed', 'shield', 'weapon'][Math.floor(Math.random() * 4)],
-                    color: { health: '#2ecc71', speed: '#f1c40f', shield: '#3498db', weapon: '#9b59b6' }[powerUps[powerUps.length - 1]?.type || 'health']
+                    x: Math.random() * (canvas.width - 40),
+                    y: Math.random() * (canvas.height - 40),
+                    width: 40,
+                    height: 40,
+                    type: ['health', 'speed', 'shield', 'weapon', 'armor', 'boost'][Math.floor(Math.random() * 6)],
+                    color: { 
+                        health: '#2ecc71', 
+                        speed: '#f1c40f', 
+                        shield: '#3498db', 
+                        weapon: '#9b59b6', 
+                        armor: '#7f8c8d',
+                        boost: '#e67e22'
+                    }[powerUps[powerUps.length - 1]?.type || 'health'],
+                    rotation: 0,
+                    pulse: 0
                 });
             }
             
@@ -398,6 +567,9 @@
                     endGame();
                 }
             }, 1000);
+            
+            // Start game loop
+            gameLoop();
         }
         
         // Draw car with details
@@ -405,6 +577,10 @@
             ctx.save();
             ctx.translate(car.x, car.y);
             ctx.rotate(car.angle);
+            
+            // Car shadow
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            ctx.fillRect(-car.width/2 - 5, -car.height/2 - 5, car.width, car.height);
             
             // Car body
             ctx.fillStyle = car.color;
@@ -416,55 +592,102 @@
             
             // Windows
             ctx.fillStyle = '#aed6f1';
-            ctx.fillRect(-car.width/2 + 8, -car.height/2 + 8, car.width - 16, 10);
-            ctx.fillRect(-car.width/2 + 8, car.height/2 - 18, car.width - 16, 10);
+            ctx.fillRect(-car.width/2 + 8, -car.height/2 + 8, car.width - 16, 12);
+            ctx.fillRect(-car.width/2 + 8, car.height/2 - 20, car.width - 16, 12);
             
             // Wheels
             ctx.fillStyle = '#2c3e50';
-            ctx.fillRect(-car.width/2 - 3, -car.height/2 + 5, 3, 10);
-            ctx.fillRect(-car.width/2 - 3, car.height/2 - 15, 3, 10);
-            ctx.fillRect(car.width/2, -car.height/2 + 5, 3, 10);
-            ctx.fillRect(car.width/2, car.height/2 - 15, 3, 10);
+            ctx.fillRect(-car.width/2 - 4, -car.height/2 + 8, 4, 12);
+            ctx.fillRect(-car.width/2 - 4, car.height/2 - 20, 4, 12);
+            ctx.fillRect(car.width/2, -car.height/2 + 8, 4, 12);
+            ctx.fillRect(car.width/2, car.height/2 - 20, 4, 12);
+            
+            // Headlights
+            ctx.fillStyle = '#f1c40f';
+            ctx.beginPath();
+            ctx.arc(-car.width/2 + 5, -car.height/2 + 15, 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(-car.width/2 + 5, car.height/2 - 15, 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Shield effect if active
+            if (car.shield) {
+                ctx.strokeStyle = 'rgba(52, 152, 219, 0.7)';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(0, 0, car.width, 0, Math.PI * 2);
+                ctx.stroke();
+            }
             
             ctx.restore();
         }
         
         // Draw obstacle
         function drawObstacle(obs) {
+            ctx.save();
+            ctx.translate(obs.x + obs.width/2, obs.y + obs.height/2);
+            ctx.rotate(obs.rotation);
+            
             ctx.fillStyle = obs.color;
-            ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+            ctx.fillRect(-obs.width/2, -obs.height/2, obs.width, obs.height);
             
             // Add pattern to obstacle
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-            ctx.lineWidth = 2;
-            ctx.strokeRect(obs.x, obs.y, obs.width, obs.height);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(-obs.width/2, -obs.height/2, obs.width, obs.height);
+            
+            ctx.restore();
+            
+            obs.rotation += obs.spinSpeed;
         }
         
-        // Draw power-up
+        // Draw power-up with animation
         function drawPowerUp(pu) {
+            ctx.save();
+            ctx.translate(pu.x + pu.width/2, pu.y + pu.height/2);
+            ctx.rotate(pu.rotation);
+            pu.rotation += 0.1;
+            
+            // Pulsing effect
+            const pulseScale = 1 + Math.sin(pu.pulse) * 0.2;
+            pu.pulse += 0.1;
+            
+            ctx.scale(pulseScale, pulseScale);
+            
             ctx.fillStyle = pu.color;
             ctx.beginPath();
-            ctx.arc(pu.x + pu.width/2, pu.y + pu.height/2, pu.width/2, 0, Math.PI * 2);
+            ctx.arc(0, 0, pu.width/2, 0, Math.PI * 2);
             ctx.fill();
             
             // Draw icon based on type
-            ctx.font = '20px Arial';
+            ctx.font = '24px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillStyle = 'white';
             
             switch(pu.type) {
-                case 'health': ctx.fillText('❤️', pu.x + pu.width/2, pu.y + pu.height/2); break;
-                case 'speed': ctx.fillText('⚡', pu.x + pu.width/2, pu.y + pu.height/2); break;
-                case 'shield': ctx.fillText('🛡️', pu.x + pu.width/2, pu.y + pu.height/2); break;
-                case 'weapon': ctx.fillText('🔫', pu.x + pu.width/2, pu.y + pu.height/2); break;
+                case 'health': ctx.fillText('❤️', 0, 0); break;
+                case 'speed': ctx.fillText('⚡', 0, 0); break;
+                case 'shield': ctx.fillText('🛡️', 0, 0); break;
+                case 'weapon': ctx.fillText('🔫', 0, 0); break;
+                case 'armor': ctx.fillText('🛡', 0, 0); break;
+                case 'boost': ctx.fillText('🚀', 0, 0); break;
             }
+            
+            ctx.restore();
         }
         
         // Draw weapon projectile
         function drawWeapon(wep) {
             ctx.fillStyle = wep.color;
             ctx.fillRect(wep.x, wep.y, wep.width, wep.height);
+            
+            // Add glow effect
+            ctx.shadowColor = wep.color;
+            ctx.shadowBlur = 10;
+            ctx.fillRect(wep.x, wep.y, wep.width, wep.height);
+            ctx.shadowBlur = 0;
         }
         
         // Draw explosion
@@ -475,13 +698,68 @@
             ctx.fill();
         }
         
-        //        function drawParticle(p) {
+        // Draw particle
+        function drawParticle(p) {
             ctx.fillStyle = p.color;
             ctx.globalAlpha = p.alpha;
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
             ctx.fill();
             ctx.globalAlpha = 1;
+        }
+        
+        // Draw trail behind cars
+        function drawTrail(trail) {
+            for (let i = 0; i < trail.points.length; i++) {
+                const point = trail.points[i];
+                const alpha = i / trail.points.length;
+                ctx.fillStyle = `rgba(${trail.r}, ${trail.g}, ${trail.b}, ${alpha})`;
+                ctx.beginPath();
+                ctx.arc(point.x, point.y, point.size * alpha, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        // Draw background
+        function drawBackground() {
+            // Gradient background
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#0a0e1a');
+            gradient.addColorStop(1, '#1a1a2e');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw road markings
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 3;
+            ctx.setLineDash([20, 30]);
+            
+            for (let y = 0; y < canvas.height; y += 100) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+            
+            ctx.setLineDash([]);
+            
+            // Draw grid
+            ctx.strokeStyle = 'rgba(100, 100, 255, 0.1)';
+            ctx.lineWidth = 1;
+            
+            for (let x = 0; x < canvas.width; x += 50) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            
+            for (let y = 0; y < canvas.height; y += 50) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
         }
         
         // Update game state
@@ -529,7 +807,7 @@
                     player1.y < obs.y + obs.height &&
                     player1.y + player1.height > obs.y
                 ) {
-                    player1.health -= 10;
+                    player1.health -= 5;
                     createExplosion(player1.x + player1.width/2, player1.y + player1.height/2, '#e74c3c');
                 }
                 
@@ -539,7 +817,7 @@
                     player2.y < obs.y + obs.height &&
                     player2.y + player2.height > obs.y
                 ) {
-                    player2.health -= 10;
+                    player2.health -= 5;
                     createExplosion(player2.x + player2.width/2, player2.y + player2.height/2, '#e74c3c');
                 }
             }
@@ -555,6 +833,7 @@
                     player1.y + player1.height > pu.y
                 ) {
                     applyPowerUp(player1, pu);
+                    showNotification(`تم جمع ${pu.type}`);
                     powerUps.splice(i, 1);
                 }
                 
@@ -588,7 +867,9 @@
                     wep.y < player1.y + player1.height &&
                     wep.y + wep.height > player1.y
                 ) {
-                    player1.health -= wep.damage;
+                    if (!player1.shield) {
+                        player1.health -= wep.damage;
+                    }
                     createExplosion(wep.x, wep.y, '#f39c12');
                     weapons.splice(i, 1);
                     continue;
@@ -600,7 +881,9 @@
                     wep.y < player2.y + player2.height &&
                     wep.y + wep.height > player2.y
                 ) {
-                    player2.health -= wep.damage;
+                    if (!player2.shield) {
+                        player2.health -= wep.damage;
+                    }
                     createExplosion(wep.x, wep.y, '#f39c12');
                     weapons.splice(i, 1);
                     continue;
@@ -610,8 +893,8 @@
             // Update explosions
             for (let i = explosions.length - 1; i >= 0; i--) {
                 const exp = explosions[i];
-                exp.radius += 1;
-                exp.alpha -= 0.02;
+                exp.radius += 1.5;
+                exp.alpha -= 0.03;
                 
                 if (exp.alpha <= 0) {
                     explosions.splice(i, 1);
@@ -638,6 +921,13 @@
             player1HealthEl.style.width = `${player1.health}%`;
             player2HealthEl.style.width = `${player2.health}%`;
             
+            // Update minimap positions
+            minimapPlayer1.style.left = `${(player1.x / canvas.width) * 150}px`;
+            minimapPlayer1.style.top = `${(player1.y / canvas.height) * 150}px`;
+            
+            minimapPlayer2.style.left = `${(player2.x / canvas.width) * 150}px`;
+            minimapPlayer2.style.top = `${(player2.y / canvas.height) * 150}px`;
+            
             // Check if game over
             if (player1.health <= 0 || player2.health <= 0) {
                 endGame();
@@ -651,17 +941,25 @@
                     player.health = Math.min(100, player.health + 30);
                     break;
                 case 'speed':
-                    player.speed += 1;
-                    setTimeout(() => player.speed -= 1, 5000); // Temporary boost
+                    player.speed += 2;
+                    setTimeout(() => player.speed -= 2, 8000); // Temporary boost
                     break;
                 case 'shield':
-                    // Visual shield effect
+                    player.shield = true;
+                    setTimeout(() => player.shield = false, 10000);
                     break;
                 case 'weapon':
-                    const newWeapon = ['machinegun', 'missile', 'laser'][Math.floor(Math.random() * 3)];
+                    const newWeapon = ['machinegun', 'missile', 'laser', 'flamethrower'][Math.floor(Math.random() * 4)];
                     if (!player.weapons.includes(newWeapon)) {
-                        playerWeapon);
+                        player.weapons.push(newWeapon);
                     }
+                    break;
+                case 'armor':
+                    player.armor += 20;
+                    break;
+                case 'boost':
+                    player.acceleration = 5;
+                    setTimeout(() => player.acceleration = 0, 5000);
                     break;
             }
         }
@@ -677,14 +975,14 @@
             });
             
             // Create particles
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 30; i++) {
                 particles.push({
                     x: x,
                     y: y,
-                    size: Math.random() * 5 + 2,
+                    size: Math.random() * 6 + 2,
                     color: color,
-                    vx: (Math.random() - 0.5) * 10,
-                    vy: (Math.random() - 0.5) * 10,
+                    vx: (Math.random() - 0.5) * 12,
+                    vy: (Math.random() - 0.5) * 12,
                     alpha: 1
                 });
             }
@@ -692,8 +990,32 @@
         
         // Player shooting
         function shoot(player, target) {
-            const speed = 10;
-            const damage = 20;
+            if (Date.now() - player.lastShot < 200) return; // Rate limit
+            
+            player.lastShot = Date.now();
+            
+            const speed = 12;
+            let damage = 20;
+            let color = player.color;
+            
+            // Adjust based on weapon
+            switch(player.currentWeapon) {
+                case 'missile':
+                    speed = 8;
+                    damage = 35;
+                    color = '#9b59b6';
+                    break;
+                case 'laser':
+                    speed = 15;
+                    damage = 25;
+                    color = '#f1c40f';
+                    break;
+                case 'flamethrower':
+                    speed = 10;
+                    damage = 15;
+                    color = '#e67e22';
+                    break;
+            }
             
             // Calculate direction to target
             const angle = Math.atan2(
@@ -704,41 +1026,28 @@
             weapons.push({
                 x: player.x + player.width/2,
                 y: player.y + player.height/2,
-                width: 10,
-                height: 5,
+                width: 12,
+                height: 6,
                 speedX: Math.cos(angle) * speed,
                 speedY: Math.sin(angle) * speed,
                 damage: damage,
-                color: player.color
+                color: color
             });
+        }
+        
+        // Show notification
+        function showNotification(text) {
+            notification.textContent = text;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 2000);
         }
         
         // Draw everything
         function draw() {
-            // Clear canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw track background
-            ctx.fillStyle = '#1e3c72';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw grid lines
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-            ctx.lineWidth = 1;
-            
-            for (let x = 0; x < canvas.width; x += 50) {
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, canvas.height);
-                ctx.stroke();
-            }
-            
-            for (let y = 0; y < canvas.height; y += 50) {
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(canvas.width, y);
-                ctx.stroke();
-            }
+            // Draw background
+            drawBackground();
             
             // Draw obstacles
             obstacles.forEach(drawObstacle);
@@ -761,7 +1070,7 @@
             
             // Draw finish line
             ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-            ctx.fillRect(canvas.width - 20, 0, 20, canvas.height);
+            ctx.fillRect(canvas.width - 30, 0, 30, canvas.height);
         }
         
         // Game loop
@@ -778,6 +1087,7 @@
             gameRunning = false;
             const winner = player1.health > player2.health ? "اللاعب 1" : "اللاعب 2";
             winnerText.textContent = `${winner} فاز!`;
+            finalScore.textContent = `${player1.score}-${player2.score}`;
             gameOverScreen.style.display = 'flex';
         }
         
@@ -817,6 +1127,24 @@
             });
         });
         
+        // Chat functionality
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const message = chatInput.value.trim();
+                if (message) {
+                    const messagesContainer = document.querySelector('.messages');
+                    const messageElement = document.createElement('div');
+                    messageElement.className = 'message';
+                    messageElement.textContent = `أنا: ${message}`;
+                    messagesContainer.appendChild(messageElement);
+                    chatInput.value = '';
+                    
+                    // Scroll to bottom
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }
+            }
+        });
+        
         // Restart button
         restartBtn.addEventListener('click', () => {
             location.reload();
@@ -824,7 +1152,6 @@
         
         // Initialize and start game
         initGame();
-        gameLoop();
     </script>
 </body>
 </html>
