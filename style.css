@@ -151,3 +151,69 @@ body {
         gap: 15px;
     }
 }
+/* Section 2: The Blood Pact */
+.contract-section {
+    min-height: 100vh;
+    background-color: #050505; /* لون أسود أعمق من الواجهة الأولى */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+}
+
+.content-wrapper {
+    max-width: 800px;
+    text-align: center;
+}
+
+/* عنوان السكشن المخفي بالبداية */
+.section-title {
+    font-family: 'Cinzel', serif; /* خط كلاسيكي */
+    font-size: 3rem;
+    color: var(--accent-crimson);
+    margin-bottom: 40px;
+    text-shadow: 0 0 15px rgba(128, 0, 32, 0.6);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s ease-in-out;
+}
+
+/* كلاس الظهور اللي راح نضيفه بالـ JavaScript */
+.section-title.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* صندوق النص (ورقة العقد) */
+.parchment {
+    background: rgba(15, 15, 15, 0.8);
+    border: 1px solid var(--accent-gold);
+    padding: 50px;
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(197, 168, 128, 0.05);
+}
+
+.pact-text {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    margin-bottom: 25px;
+    font-style: italic;
+    color: var(--text-muted);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 1.2s ease-in-out 0.2s; /* تأخير بسيط حتى يظهر بعد العنوان */
+}
+
+.pact-text.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* النص البارز باللون القرمزي */
+.highlight-blood {
+    color: var(--accent-crimson);
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin-top: 40px;
+    font-style: normal;
+}
