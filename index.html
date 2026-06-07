@@ -11,33 +11,36 @@
 </head>
 <body>
 
-    <section class="hero-section">
-        <div class="overlay"></div>
+        <!-- حاوية البرزنتيشن -->
+    <div id="presentation-container">
 
-        <div class="hero-content">
-            <p class="subtitle">روائع الأدب المسرحي لكريستوفر مارلو</p>
-            <h1 class="main-title">دكتور فاوستس</h1>
-            <p class="tagline">إلى أي مدى قد تذهب بك الطموحات.. إذا كان الثمن هو روحك؟</p>
-            
-            <div class="cta-container">
-                <a href="#contract" class="btn btn-primary" id="explore-btn">وقّع العقد الآن</a>
-                <a href="#about" class="btn btn-secondary">اكتشف القصة</a>
+        <!-- الشريحة الأولى (Slide 1) -->
+        <section class="slide active" id="slide-1">
+            <div class="overlay"></div>
+            <div class="hero-content">
+                <p class="subtitle">A Masterpiece by Christopher Marlowe</p>
+                <h1 class="main-title">Doctor Faustus</h1>
+                <p class="tagline">How far would you go for infinite knowledge... if the price was your soul?</p>
+                <p class="click-hint">(Click anywhere to begin)</p>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- الشريحة الثانية (Slide 2) -->
+        <section class="slide" id="slide-2">
+            <div class="content-wrapper">
+                <h2 class="section-title">The Blood Pact</h2>
+                <div class="parchment">
+                    <p class="pact-text">"I, John Faustus of Wittenberg, Doctor, by these presents, do give both body and soul to Lucifer..."</p>
+                    <p class="pact-text">For four and twenty years, to live in all voluptuousness, with Mephistopheles as my servant.</p>
+                    <p class="pact-text highlight-blood">But what is the true price of infinite knowledge?</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
 
     <script src="script.js"></script>
-        <!-- Section 2: The Blood Pact -->
-    <section id="contract" class="contract-section">
-        <div class="content-wrapper">
-            <h2 class="section-title">The Blood Pact</h2>
-            <div class="parchment">
-                <p class="pact-text">"I, John Faustus of Wittenberg, Doctor, by these presents, do give both body and soul to Lucifer..."</p>
-                <p class="pact-text">For four and twenty years, to live in all voluptuousness, with Mephistopheles as my servant.</p>
-                <p class="pact-text highlight-blood">But what is the true price of infinite knowledge?</p>
-            </div>
-        </div>
-    </section>
+
 
 </body>
 </html>
